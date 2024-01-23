@@ -130,8 +130,17 @@ const gameboard = (function () {
       return true;
     return false;
   };
+  const full = function() {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if(board[i][j] === " ")
+          return false;
+      }
+    }
+    return true;
+  }
 
-  return { getBoard, setMove, gameover };
+  return { getBoard, setMove, gameover, full };
 })();
 
 //--------------- PLAYER ---------------
@@ -143,6 +152,7 @@ function createPlayer(name, symbol) {
 
   const givePoints = () => point++;
   const getPoints = () => points;
+  const setName = (name) => playerName = name; 
   const getName = () => playerName;
   const getSymbol = () => playerSymbol;
   const setTurn = () => {
@@ -150,7 +160,7 @@ function createPlayer(name, symbol) {
   };
   const getTurn = () => turn;
 
-  return { givePoints, getPoints, getName, getSymbol, getTurn, setTurn };
+  return { givePoints, getPoints, setName, getName, getSymbol, getTurn, setTurn };
 }
 
 //--------------- cacheDom ---------------
@@ -167,6 +177,10 @@ const cacheDom = (function () {
   const field9 = field.querySelector("#box9");
   const turn = field.querySelector("#turn");
   const result = field.querySelector("#result");
+  const dialog = field.querySelector("dialog");
+  const btnConfirm = field.querySelector("#btnConfirm");
+  const name1 = field.querySelector("#player1");
+  const name2 = field.querySelector("#player2");
 
   field1.addEventListener("click", () => {
     game("1");
@@ -195,6 +209,11 @@ const cacheDom = (function () {
   field9.addEventListener("click", () => {
     game("9");
   });
+  btnConfirm.addEventListener("click", () => {
+    player1.setName(name1.value);
+    player2.setName(name1.value);
+    dialog.close();
+  })
   return {
     field1,
     field2,
@@ -207,6 +226,7 @@ const cacheDom = (function () {
     field9,
     turn,
     result,
+    dialog,
   };
 })();
 
@@ -231,28 +251,31 @@ function displayGameDOM(board) {
 }
 
 //--------------- GAMEFLOW / MAIN ---------------
+const player1 = createPlayer("X");
+const player2 = createPlayer("O");
 
-const player1 = createPlayer("Player 1", "X");
-const player2 = createPlayer("Player 2", "O");
+cacheDom.dialog.showModal();
+
 
 let playerTurn = player1;
-//let roundCount = 0;
-cacheDom.turn.textContent = "Player 1 turn";
+cacheDom.turn.textContent =  player1Name + "turn";
+
 
 function game(field) {
   if (gameboard.setMove(field, playerTurn.getSymbol())) {
     displayGameDOM(gameboard.getBoard());
     if (gameboard.gameover(playerTurn.getSymbol())) {
       cacheDom.result.textContent = playerTurn.getName() + " has won!";
-    } else {
-      //console.log("It's a tie!");
+    } else if (gameboard.full()){
+      console.log("It's a tie!");
     }
+
     if (player1.getTurn()) {
-      cacheDom.turn.textContent = "Player 1 turn";
+      cacheDom.turn.textContent =  player1.getName() + "turn";
       playerTurn = player1;
       player1.setTurn();
     } else {
-      cacheDom.turn.textContent = "Player 2 turn";
+      cacheDom.turn.textContent = player2.getName() + "turn";
       playerTurn = player2;
       player1.setTurn();
     }
@@ -261,40 +284,4 @@ function game(field) {
   }
 }
 
-//---------------------------------------------
-// while (!gameboard.gameover(playerTurn.getSymbol()) && roundCount < 9) {
-//   if (player1.getTurn()) {
-//     playerTurn = player1;
-//     player1.setTurn();
-//   } else {
-//     playerTurn = player2;
-//     player1.setTurn();
-//   }
 
-//   displayGame(gameboard.getBoard());
-//   displayGameDOM(gameboard.getBoard());
-//   console.log("Move: " + playerTurn.getName());
-//   console.log(playerTurn.getSymbol());
-//   while (true) {
-//     if (
-//       gameboard.setMove(
-//         prompt("Your move: " + playerTurn.getName()),
-//         playerTurn.getSymbol()
-//       )
-//     ) {
-//       break;
-//     }
-
-//     console.log("Invalid Move!");
-//     displayGame(gameboard.getBoard());
-//     displayGameDOM(gameboard.getBoard());
-//   }
-//   roundCount++;
-//   //break;
-// }
-// console.log("Gameover!");
-// if (gameboard.gameover(playerTurn.getSymbol())) {
-//   console.log("Player: " + playerTurn.getName() + " won!");
-// } else {
-//   console.log("It's a tie!");
-// }
