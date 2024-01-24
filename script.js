@@ -2,14 +2,17 @@
 const gameboard = (function () {
   const board = [];
 
-  for (let i = 0; i < 3; i++) {
-    board[i] = [];
-    for (let j = 0; j < 3; j++) {
-      board[i][j] = " ";
+  
+  const resetBoard = () => {
+    for (let i = 0; i < 3; i++) {
+      board[i] = [];
+      for (let j = 0; j < 3; j++) {
+        board[i][j] = " ";
+      }
     }
   }
 
-  const setMove = function (move, symbol) {
+  const setMove = (move, symbol) => {
     switch (Number(move)) {
       case 1:
         if (board[0][0] === " ") {
@@ -139,18 +142,18 @@ const gameboard = (function () {
     }
     return true;
   }
-
-  return { getBoard, setMove, gameover, full };
+  resetBoard();
+  return { getBoard, setMove, gameover, full, resetBoard };
 })();
 
 //--------------- PLAYER ---------------
-function createPlayer(name, symbol) {
-  const playerName = name;
+function createPlayer(symbol) {
+  let playerName;
   const playerSymbol = symbol;
   let points = 0;
   let turn = false;
 
-  const givePoints = () => point++;
+  const setPoints = () => points++;
   const getPoints = () => points;
   const setName = (name) => playerName = name; 
   const getName = () => playerName;
@@ -160,7 +163,7 @@ function createPlayer(name, symbol) {
   };
   const getTurn = () => turn;
 
-  return { givePoints, getPoints, setName, getName, getSymbol, getTurn, setTurn };
+  return { setPoints, getPoints, setName, getName, getSymbol, getTurn, setTurn };
 }
 
 //--------------- cacheDom ---------------
@@ -176,11 +179,15 @@ const cacheDom = (function () {
   const field8 = field.querySelector("#box8");
   const field9 = field.querySelector("#box9");
   const turn = field.querySelector("#turn");
-  const result = field.querySelector("#result");
-  const dialog = field.querySelector("dialog");
+  const dialog = field.querySelector("#dialog-1");
   const btnConfirm = field.querySelector("#btnConfirm");
   const name1 = field.querySelector("#player1");
   const name2 = field.querySelector("#player2");
+  const required = field.querySelector("#required");
+  const dialog_2 = field.querySelector("#dialog-2");
+  const won = field.querySelector("#won");
+  const points = field.querySelector("#points");
+  const playAgain = field.querySelector("#playAgain");
 
   field1.addEventListener("click", () => {
     game("1");
@@ -209,11 +216,23 @@ const cacheDom = (function () {
   field9.addEventListener("click", () => {
     game("9");
   });
+
   btnConfirm.addEventListener("click", () => {
-    player1.setName(name1.value);
-    player2.setName(name1.value);
-    dialog.close();
-  })
+    if(!name1.value == "" && !name2.value == "") {
+      player1.setName(name1.value);
+      player2.setName(name2.value);
+      setupGame();
+      dialog.close();
+    } else {
+      required.textContent = "Please fill in missing names!";
+    }
+  });
+
+  playAgain.addEventListener("click", () => {
+    dialog_2.close();
+    restardGame();
+  });
+
   return {
     field1,
     field2,
@@ -225,10 +244,18 @@ const cacheDom = (function () {
     field8,
     field9,
     turn,
-    result,
     dialog,
+    dialog_2,
+    won,
+    playAgain,
+    points,
   };
 })();
+
+function restardGame() {
+  gameboard.resetBoard();
+  displayGameDOM(gameboard.getBoard());
+}
 
 //--------------- displayGame-Console ---------------
 function displayGame(board) {
@@ -250,24 +277,37 @@ function displayGameDOM(board) {
   cacheDom.field9.textContent = board[2][2];
 }
 
+function setupGame() {
+  playerTurn = player1;
+  cacheDom.turn.textContent =  player1.getName() + " turn";
+}
+
+function displayGameover(str) {
+  cacheDom.dialog_2.showModal();
+  if(str === "winner") {
+    playerTurn.setPoints();
+    cacheDom.won.textContent = playerTurn.getName() + " has won!";
+  }
+  else {
+    cacheDom.won.textContent = "It's a tie!"; 
+  }
+  cacheDom.points.textContent = player1.getName() + " points: " + player1.getPoints() + "    "+ player2.getName() + " points: " + player2.getPoints(); 
+}
+
 //--------------- GAMEFLOW / MAIN ---------------
 const player1 = createPlayer("X");
 const player2 = createPlayer("O");
-
+let playerTurn;
 cacheDom.dialog.showModal();
-
-
-let playerTurn = player1;
-cacheDom.turn.textContent =  player1Name + "turn";
 
 
 function game(field) {
   if (gameboard.setMove(field, playerTurn.getSymbol())) {
     displayGameDOM(gameboard.getBoard());
     if (gameboard.gameover(playerTurn.getSymbol())) {
-      cacheDom.result.textContent = playerTurn.getName() + " has won!";
+      displayGameover("winner");
     } else if (gameboard.full()){
-      console.log("It's a tie!");
+      displayGameover("tie");
     }
 
     if (player1.getTurn()) {

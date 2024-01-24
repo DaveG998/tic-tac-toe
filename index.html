@@ -9,14 +9,23 @@
   <body>
     <header><h1>Tic-Tac-Toe</h1></header>
     <main>
-      <dialog>
+      <dialog id="dialog-1">
         <label for="player1">Player 1 name:</label>
         <input type="text" id="player1" required>
         <label for="player2">Player 2 name:</label>
         <input type="text" id="player2" required>
         <button id="btnConfirm">Start Game</button>
+        <div id="required"></div>
+      </dialog>
+      <dialog id="dialog-2">
+        <div id="won"></div>
+        <div id="points"></div>
+        <button id="playAgain">Play again</button>
       </dialog>
       <div class="container">
+        <div id="ponits-player1" class="points"></div>
+        <div><button id="restartBtn">Restart</button></div>
+        <div id="ponits-player2" class="points"></div>
         <div class="box" id="box1"></div>
         <div class="box" id="box2"></div>
         <div class="box" id="box3"></div>
@@ -28,7 +37,6 @@
         <div class="box" id="box9"></div>
       </div>
       <div id="turn"></div>
-      <div id="result"></div>
     </main>
     <footer></footer>
 
