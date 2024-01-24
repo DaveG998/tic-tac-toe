@@ -1,8 +1,70 @@
+//--------------- cacheDom ---------------
+const cacheDom = (function () {
+  const field = document.querySelector("main");
+  const field1 = field.querySelector("#box1");
+  const field2 = field.querySelector("#box2");
+  const field3 = field.querySelector("#box3");
+  const field4 = field.querySelector("#box4");
+  const field5 = field.querySelector("#box5");
+  const field6 = field.querySelector("#box6");
+  const field7 = field.querySelector("#box7");
+  const field8 = field.querySelector("#box8");
+  const field9 = field.querySelector("#box9");
+  const turn = field.querySelector("#turn");
+  const dialog = field.querySelector("#dialog-1");
+  const btnConfirm = field.querySelector("#btnConfirm");
+  const name1 = field.querySelector("#player1");
+  const name2 = field.querySelector("#player2");
+  const required = field.querySelector("#required");
+  const dialog_2 = field.querySelector("#dialog-2");
+  const won = field.querySelector("#won");
+  const points = field.querySelector("#points");
+  const playAgain = field.querySelector("#playAgain");
+  const points1 = field.querySelector("#points-1");
+  const points2 = field.querySelector("#points-2");
+  const player1Points = field.querySelector("#points-player1");
+  const player2Points = field.querySelector("#points-player2");
+  const btnRestartBtn = field.querySelector("#restartBtn");
+
+  return {
+    field1,
+    field2,
+    field3,
+    field4,
+    field5,
+    field6,
+    field7,
+    field8,
+    field9,
+    turn,
+    dialog,
+    dialog_2,
+    won,
+    playAgain,
+    points,
+    points1,
+    points2,
+    player1Points,
+    player2Points,
+    btnConfirm,
+    name2,
+    name1,
+    required,
+    btnRestartBtn,
+  };
+})();
+
 //--------------- GAMEBOARD ---------------
 const gameboard = (function () {
   const board = [];
 
-  
+  for (let i = 0; i < 3; i++) {
+    board[i] = [];
+    for (let j = 0; j < 3; j++) {
+      board[i][j] = " ";
+    }
+  }
+
   const resetBoard = () => {
     for (let i = 0; i < 3; i++) {
       board[i] = [];
@@ -10,7 +72,8 @@ const gameboard = (function () {
         board[i][j] = " ";
       }
     }
-  }
+    displayGameDOM();
+  };
 
   const setMove = (move, symbol) => {
     switch (Number(move)) {
@@ -133,16 +196,19 @@ const gameboard = (function () {
       return true;
     return false;
   };
-  const full = function() {
+  const full = function () {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        if(board[i][j] === " ")
-          return false;
+        if (board[i][j] === " ") return false;
       }
     }
     return true;
-  }
-  resetBoard();
+  };
+
+  // function restartGame() {
+  //   gameboard.resetBoard();
+  //   displayGameDOM(gameboard.getBoard());
+  // }
   return { getBoard, setMove, gameover, full, resetBoard };
 })();
 
@@ -155,7 +221,7 @@ function createPlayer(symbol) {
 
   const setPoints = () => points++;
   const getPoints = () => points;
-  const setName = (name) => playerName = name; 
+  const setName = (name) => (playerName = name);
   const getName = () => playerName;
   const getSymbol = () => playerSymbol;
   const setTurn = () => {
@@ -163,155 +229,126 @@ function createPlayer(symbol) {
   };
   const getTurn = () => turn;
 
-  return { setPoints, getPoints, setName, getName, getSymbol, getTurn, setTurn };
+  return {
+    setPoints,
+    getPoints,
+    setName,
+    getName,
+    getSymbol,
+    getTurn,
+    setTurn,
+  };
 }
 
-//--------------- cacheDom ---------------
-const cacheDom = (function () {
-  const field = document.querySelector("main");
-  const field1 = field.querySelector("#box1");
-  const field2 = field.querySelector("#box2");
-  const field3 = field.querySelector("#box3");
-  const field4 = field.querySelector("#box4");
-  const field5 = field.querySelector("#box5");
-  const field6 = field.querySelector("#box6");
-  const field7 = field.querySelector("#box7");
-  const field8 = field.querySelector("#box8");
-  const field9 = field.querySelector("#box9");
-  const turn = field.querySelector("#turn");
-  const dialog = field.querySelector("#dialog-1");
-  const btnConfirm = field.querySelector("#btnConfirm");
-  const name1 = field.querySelector("#player1");
-  const name2 = field.querySelector("#player2");
-  const required = field.querySelector("#required");
-  const dialog_2 = field.querySelector("#dialog-2");
-  const won = field.querySelector("#won");
-  const points = field.querySelector("#points");
-  const playAgain = field.querySelector("#playAgain");
-
-  field1.addEventListener("click", () => {
+//--------------- addEventlistener ---------------
+function addEventListeners() {
+  cacheDom.field1.addEventListener("click", () => {
     game("1");
   });
-  field2.addEventListener("click", () => {
+  cacheDom.field2.addEventListener("click", () => {
     game("2");
   });
-  field3.addEventListener("click", () => {
+  cacheDom.field3.addEventListener("click", () => {
     game("3");
   });
-  field4.addEventListener("click", () => {
+  cacheDom.field4.addEventListener("click", () => {
     game("4");
   });
-  field5.addEventListener("click", () => {
+  cacheDom.field5.addEventListener("click", () => {
     game("5");
   });
-  field6.addEventListener("click", () => {
+  cacheDom.field6.addEventListener("click", () => {
     game("6");
   });
-  field7.addEventListener("click", () => {
+  cacheDom.field7.addEventListener("click", () => {
     game("7");
   });
-  field8.addEventListener("click", () => {
+  cacheDom.field8.addEventListener("click", () => {
     game("8");
   });
-  field9.addEventListener("click", () => {
+  cacheDom.field9.addEventListener("click", () => {
     game("9");
   });
 
-  btnConfirm.addEventListener("click", () => {
-    if(!name1.value == "" && !name2.value == "") {
-      player1.setName(name1.value);
-      player2.setName(name2.value);
+  cacheDom.btnConfirm.addEventListener("click", () => {
+    if (!cacheDom.name1.value == "" && !cacheDom.name2.value == "") {
+      player1.setName(cacheDom.name1.value);
+      player2.setName(cacheDom.name2.value);
       setupGame();
-      dialog.close();
+      cacheDom.dialog.close();
     } else {
-      required.textContent = "Please fill in missing names!";
+      cacheDom.required.textContent = "Please fill in missing names!";
     }
   });
 
-  playAgain.addEventListener("click", () => {
-    dialog_2.close();
-    restardGame();
+  cacheDom.playAgain.addEventListener("click", () => {
+    cacheDom.dialog_2.close();
+    gameboard.resetBoard();
   });
-
-  return {
-    field1,
-    field2,
-    field3,
-    field4,
-    field5,
-    field6,
-    field7,
-    field8,
-    field9,
-    turn,
-    dialog,
-    dialog_2,
-    won,
-    playAgain,
-    points,
-  };
-})();
-
-function restardGame() {
-  gameboard.resetBoard();
-  displayGameDOM(gameboard.getBoard());
-}
-
-//--------------- displayGame-Console ---------------
-function displayGame(board) {
-  console.log(board[0][0] + "|" + board[0][1] + "|" + board[0][2]);
-  console.log(board[1][0] + "+" + board[1][1] + "+" + board[1][2]);
-  console.log(board[2][0] + "|" + board[2][1] + "|" + board[2][2]);
+  cacheDom.btnRestartBtn.addEventListener("click", () => {
+    gameboard.resetBoard();
+  });
 }
 
 //--------------- displayGame - DOM ----------------
-function displayGameDOM(board) {
-  cacheDom.field1.textContent = board[0][0];
-  cacheDom.field2.textContent = board[0][1];
-  cacheDom.field3.textContent = board[0][2];
-  cacheDom.field4.textContent = board[1][0];
-  cacheDom.field5.textContent = board[1][1];
-  cacheDom.field6.textContent = board[1][2];
-  cacheDom.field7.textContent = board[2][0];
-  cacheDom.field8.textContent = board[2][1];
-  cacheDom.field9.textContent = board[2][2];
+function displayGameDOM() {
+  cacheDom.field1.textContent = gameboard.getBoard()[0][0];
+  cacheDom.field2.textContent = gameboard.getBoard()[0][1];
+  cacheDom.field3.textContent = gameboard.getBoard()[0][2];
+  cacheDom.field4.textContent = gameboard.getBoard()[1][0];
+  cacheDom.field5.textContent = gameboard.getBoard()[1][1];
+  cacheDom.field6.textContent = gameboard.getBoard()[1][2];
+  cacheDom.field7.textContent = gameboard.getBoard()[2][0];
+  cacheDom.field8.textContent = gameboard.getBoard()[2][1];
+  cacheDom.field9.textContent = gameboard.getBoard()[2][2];
 }
 
 function setupGame() {
   playerTurn = player1;
-  cacheDom.turn.textContent =  player1.getName() + " turn";
+  cacheDom.turn.textContent = player1.getName() + " turn";
+  cacheDom.points1.textContent = player1.getName();
+  cacheDom.points2.textContent = player2.getName();
+  cacheDom.player1Points.textContent = player1.getPoints();
+  cacheDom.player2Points.textContent = player2.getPoints();
 }
 
 function displayGameover(str) {
   cacheDom.dialog_2.showModal();
-  if(str === "winner") {
+  if (str === "winner") {
     playerTurn.setPoints();
     cacheDom.won.textContent = playerTurn.getName() + " has won!";
+  } else {
+    cacheDom.won.textContent = "It's a tie!";
   }
-  else {
-    cacheDom.won.textContent = "It's a tie!"; 
-  }
-  cacheDom.points.textContent = player1.getName() + " points: " + player1.getPoints() + "    "+ player2.getName() + " points: " + player2.getPoints(); 
+  cacheDom.points.textContent =
+    player1.getName() +
+    " points: " +
+    player1.getPoints() +
+    "    " +
+    player2.getName() +
+    " points: " +
+    player2.getPoints();
 }
 
-//--------------- GAMEFLOW / MAIN ---------------
+//--------------- START_GLOBAL ---------------
 const player1 = createPlayer("X");
 const player2 = createPlayer("O");
 let playerTurn;
+addEventListeners();
 cacheDom.dialog.showModal();
 
-
+//-------------- GAMEFLOW --------------
 function game(field) {
   if (gameboard.setMove(field, playerTurn.getSymbol())) {
-    displayGameDOM(gameboard.getBoard());
+    displayGameDOM();
     if (gameboard.gameover(playerTurn.getSymbol())) {
       displayGameover("winner");
-    } else if (gameboard.full()){
+    } else if (gameboard.full()) {
       displayGameover("tie");
     }
 
     if (player1.getTurn()) {
-      cacheDom.turn.textContent =  player1.getName() + "turn";
+      cacheDom.turn.textContent = player1.getName() + "turn";
       playerTurn = player1;
       player1.setTurn();
     } else {
@@ -323,5 +360,3 @@ function game(field) {
     console.log("Invalid Move!");
   }
 }
-
-

@@ -10,22 +10,30 @@
     <header><h1>Tic-Tac-Toe</h1></header>
     <main>
       <dialog id="dialog-1">
-        <label for="player1">Player 1 name:</label>
-        <input type="text" id="player1" required>
-        <label for="player2">Player 2 name:</label>
-        <input type="text" id="player2" required>
-        <button id="btnConfirm">Start Game</button>
-        <div id="required"></div>
+        <div id="dialog_2">
+          <label for="player1">Player 1 name:</label>
+          <input type="text" id="player1" required />
+          <label for="player2">Player 2 name:</label>
+          <input type="text" id="player2" required />
+          <button id="btnConfirm">Start Game</button>
+          <div id="required"></div>
+        </div>
       </dialog>
       <dialog id="dialog-2">
-        <div id="won"></div>
-        <div id="points"></div>
-        <button id="playAgain">Play again</button>
+        <div id="dialog_2">
+          <div id="won"></div>
+          <div id="points"></div>
+          <button id="playAgain">Play again</button>
+        </div>
       </dialog>
       <div class="container">
-        <div id="ponits-player1" class="points"></div>
-        <div><button id="restartBtn">Restart</button></div>
-        <div id="ponits-player2" class="points"></div>
+        <div class="points" id="points-1">
+          <div id="points-player1"></div>
+        </div>
+        <div id="restart"><button id="restartBtn">Restart</button></div>
+        <div class="points" id="points-2">
+          <div id="points-player2"></div>
+        </div>
         <div class="box" id="box1"></div>
         <div class="box" id="box2"></div>
         <div class="box" id="box3"></div>
