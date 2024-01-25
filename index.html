@@ -10,11 +10,15 @@
     <header><h1>Tic-Tac-Toe</h1></header>
     <main>
       <dialog id="dialog-1">
-        <div id="dialog_2">
-          <label for="player1">Player 1 name:</label>
-          <input type="text" id="player1" required />
-          <label for="player2">Player 2 name:</label>
-          <input type="text" id="player2" required />
+        <div id="dialog_1">
+          <div class="dia1">
+            <label for="player1">Player 1 name:</label>
+            <input type="text" id="player1" required />
+          </div>
+          <div class="dia1">
+            <label for="player2">Player 2 name:</label>
+            <input type="text" id="player2" required />
+          </div>
           <button id="btnConfirm">Start Game</button>
           <div id="required"></div>
         </div>
@@ -22,18 +26,23 @@
       <dialog id="dialog-2">
         <div id="dialog_2">
           <div id="won"></div>
-          <div id="points"></div>
           <button id="playAgain">Play again</button>
         </div>
       </dialog>
       <div class="container">
-        <div class="points" id="points-1">
+
+        <div class="points">
+          <div id="points-1"></div>
           <div id="points-player1"></div>
         </div>
+
         <div id="restart"><button id="restartBtn">Restart</button></div>
-        <div class="points" id="points-2">
+        
+        <div class="points">
+          <div id="points-2"></div>
           <div id="points-player2"></div>
         </div>
+
         <div class="box" id="box1"></div>
         <div class="box" id="box2"></div>
         <div class="box" id="box3"></div>
@@ -43,10 +52,14 @@
         <div class="box" id="box7"></div>
         <div class="box" id="box8"></div>
         <div class="box" id="box9"></div>
+        <div class="turnPlayer">
+          <div id="turnDisc"></div>
+          <div id="playerName"></div>
+        </div>
       </div>
       <div id="turn"></div>
     </main>
-    <footer></footer>
+    <footer><div>Create by Github @DaveG998</div></footer>
 
     <script src="script.js"></script>
   </body>
